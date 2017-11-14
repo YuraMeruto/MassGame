@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Threading;
 using System.Net;
 using System.Net.Sockets;
+using System.Diagnostics;
 public class Matching : MonoBehaviour
 {
     Socket sock;
@@ -12,7 +13,7 @@ public class Matching : MonoBehaviour
     [SerializeField]
     string serverIPName;
     [SerializeField]
-    SocketClass socketClassScript;
+    SocketProcedure socketProcedureScript;
     IPAddress serverip;
     IPAddress localip;
     // Use this for initialization
@@ -24,11 +25,20 @@ public class Matching : MonoBehaviour
 
     void Login()
     {
-        string gethost = socketClassScript.GetHost();
-        localip = IPAddress.Parse(gethost);
+        //        string gethost = socketProcedureScript.GetHost();
+        //        localip = IPAddress.Parse(gethost);
         serverip = IPAddress.Parse(serverIPName);
-        sock = new Socket(AddressFamily.InterNetwork,SocketType.Stream,ProtocolType.Tcp);
-        socketClassScript.Connect(ref sock,serverip,portnum);
+        sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        sock.NoDelay = true;
+        sock.ReceiveTimeout = 500;
+        Socket connectsock = null;
+        socketProcedureScript.Connect(ref sock, serverip, portnum, ref connectsock);
+        socketProcedureScript.Send(ref connectsock, "hogehoge");
+        socketProcedureScript.Receive(ref connectsock);
+        socketProcedureScript.Receive(ref connectsock);
+
+        socketProcedureScript.Close(ref connectsock);
+        socketProcedureScript.Close(ref sock);
 
     }
 }

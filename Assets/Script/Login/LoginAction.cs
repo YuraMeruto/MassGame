@@ -7,7 +7,7 @@ using System.Net;
 public class LoginAction : MonoBehaviour {
 
     [SerializeField]
-    SocketClass socketScript;
+    SocketProcedure socketProcedureScript;
     Socket sock;
     [SerializeField]
     LoginManager loginManagerScript;
@@ -46,7 +46,7 @@ public class LoginAction : MonoBehaviour {
 
     void Host()
     {
-        string addres = socketScript.GetHost();
+        string addres = socketProcedureScript.GetHost();
     }
 
     public void SetisLogin(bool set)
