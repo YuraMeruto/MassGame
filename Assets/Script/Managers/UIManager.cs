@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour {
     string url;
     [SerializeField]
     float requestTime;
+
     public void SetActiveUI(bool set)
     {
         UserNameEnter.SetActive(set);

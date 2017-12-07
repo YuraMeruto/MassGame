@@ -8,7 +8,7 @@ using System.Net.Sockets;
 using System;
 public class SocketProcedure : MonoBehaviour
 {
-
+    string test;
     byte[] recievebyte = new byte[1000];
     public void Bind(ref Socket sock, IPEndPoint endpoint)
     {
@@ -31,10 +31,20 @@ public class SocketProcedure : MonoBehaviour
 
     public void Connect(ref Socket sock, IPAddress ip, int port, ref Socket connectsock)
     {
+        Debug.Log("コネクト開始");
         sock.Connect(ip, port);
         connectsock = sock;
         Debug.Log(sock.RemoteEndPoint);
         Debug.Log("コネクトしました");
+        if(sock.Connected)
+        {
+            test = "接続できました";
+        }
+
+        else
+        {
+            test = "接続できませんでした";
+        }
     }
 
     public Socket Accept(ref Socket sock)
@@ -76,9 +86,8 @@ public class SocketProcedure : MonoBehaviour
         string message = Encoding.UTF8.GetString(recievebyte);
         Array.Clear(recievebyte, 0, recievebyte.Length);
         Debug.Log("メッセージを受信しました。");
-        Debug.Log(message);
-
-        return "";
+        Debug.Log("メッセージ内容 = " + message);
+        return message;
     }
 
     public void Close(ref Socket sock)
@@ -87,5 +96,11 @@ public class SocketProcedure : MonoBehaviour
         sock.Close();
         sock = null;
         Debug.Log("ソケットを閉じました");
+    }
+
+
+    public string TestMessage()
+    {
+        return test;
     }
 }
