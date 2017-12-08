@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameMaster : MonoBehaviour {
-
+public class GameMaster : MonoBehaviour
+{
     bool isIni = false;
     [SerializeField]
     bool isGame;
@@ -14,10 +14,12 @@ public class GameMaster : MonoBehaviour {
     {
         isGame = set;
     }
+
     public void SetIsIni(bool set)
     {
         isIni = set;
     }
+        
     void Update()
     {
         if (isIni)

@@ -43,7 +43,6 @@ public class LoginAction : MonoBehaviour {
         }
     }
 
-
     void Host()
     {
         string addres = socketProcedureScript.GetHost();

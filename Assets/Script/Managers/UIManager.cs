@@ -1,8 +1,14 @@
-﻿using System.Collections;
+﻿///////////////////////////////////////
+//製作者　名越大樹
+//クラス　ログインに関するクラス
+///////////////////////////////////////
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class UIManager : MonoBehaviour {
+public class UIManager : MonoBehaviour
+{
 
     [SerializeField]
     GameObject UserNameEnter;
@@ -21,9 +27,9 @@ public class UIManager : MonoBehaviour {
         OKButton.SetActive(set);
     }
 
-    public void PostRequest(Dictionary<string,string> data)
+    public void PostRequest(Dictionary<string, string> data)
     {
-        postScript.PostRequest(data,requestTime,url);
+        postScript.PostRequest(data, requestTime, url);
     }
     public Post.Status GetPostStatus()
     {

@@ -1,9 +1,14 @@
-﻿using System.Collections;
+﻿//////////////////////////////////////////
+//製作者　名越大樹
+//クラス　プレイヤーのパラメータに関するクラス
+//////////////////////////////////////////
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStatus : MonoBehaviour {
-
+public class PlayerStatus : MonoBehaviour
+{
     [SerializeField]
     int playerNumber;
     [SerializeField]
@@ -14,6 +19,7 @@ public class PlayerStatus : MonoBehaviour {
     bool isOnline = false;
     [SerializeField]
     int turnCount;
+
     public bool GetIsOnline()
     {
         return isOnline;

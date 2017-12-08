@@ -9,7 +9,6 @@ public class MassAction : MonoBehaviour {
     GameObject instacePos;
     public void Ini()
     {
-        Debug.Log("マスの生成開始");
         Vector3 pos = instacePos.transform.position;
         int number = 0;
         for (int length = 0; length < massListScript.GetMassLengthSize();length++)
@@ -64,21 +63,23 @@ public class MassAction : MonoBehaviour {
     public void MassRender(int playernum,int massnum)
     {
         MassStatus[,] massarry = massListScript.GetMassStatusArray();
-        Debug.Log("マスを索敵");
-        Debug.Log("マスの数字" + massnum.ToString());
         for (int length = 0; length < massListScript.GetMassLengthSize(); length++)
         {
             for (int side = 0; side < massListScript.GetMassSideSize(); side++)
             {
                 if (massnum == massarry[length,side].GetMassNumber())
                 {
-                    Debug.Log("ヒット");
                     massarry[length, side].SetPlayerNumber(playernum);
                 }
             }
         }
     }
 
+    /// <summary>
+    ///　プレイヤーが塗ったマスを数えるラス
+    /// </summary>
+    /// <param name="playernum"></param>
+    /// <returns></returns>
     public int PlayerMassSumCount(int playernum)
     {
         MassStatus[,] massarray = massListScript.GetMassStatusArray();
@@ -94,5 +95,30 @@ public class MassAction : MonoBehaviour {
             }
         }
         return num;
+    }
+
+    /// <summary>
+    ///　プレイヤーが塗ったマスを数える処理
+    /// </summary>
+    /// <param name="p1"></param>
+    /// <param name="p2"></param>
+    /// <param name="playernum"></param>
+    public void PlayerMassCount(ref int p1,ref int p2,int playernum)
+    {
+        MassStatus[,] massarray = massListScript.GetMassStatusArray();
+        for (int length = 0; length < massListScript.GetMassLengthSize(); length++)
+        {
+            for (int side = 0; side < massListScript.GetMassSideSize(); side++)
+            {
+                if (massarray[length, side].GetPlayerNumber() == 1)
+                {
+                    p1++;
+                }
+                else if(massarray[length,side].GetPlayerNumber() == 2)
+                {
+                    p2++;
+                }
+            }
+        }
     }
 }

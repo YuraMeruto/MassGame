@@ -1,9 +1,15 @@
-﻿using System.Collections;
+﻿///////////////////////////////////////
+//製作者　名越大樹
+//クラス　プレイヤーのパラメータに関するクラス
+///////////////////////////////////////
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class PlayerUI : MonoBehaviour {
 
+public class PlayerUI : MonoBehaviour
+{
     [SerializeField]
     Image playerUI;
     [SerializeField]

@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿/////////////////////////////////////////
+//製作者　名越大樹
+//クラス　タイトルのログインに関する処理
+/////////////////////////////////////////
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LoginManager : MonoBehaviour
 {
-
     [SerializeField]
     ReadPlayerPref readPlayerPlefScript;
     [SerializeField]

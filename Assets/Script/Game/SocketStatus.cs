@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿////////////////////////////////////
+//製作者　名越大樹
+//クラス　サーバーとの通信に関するクラス
+////////////////////////////////////
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -17,10 +22,11 @@ public class SocketStatus : MonoBehaviour
         Recv,
         Close
     }
+    ////////////////////////////////////////////
+    //ソケットに関する変宣言数開始
+    ////////////////////////////////////////////////
     [SerializeField]
-    Status status;
-    [SerializeField]
-    bool isAction;
+    Status status;//ソケットの動作を設定する変数
     Socket sock;
     Socket connectsock;
     [SerializeField]
@@ -31,6 +37,15 @@ public class SocketStatus : MonoBehaviour
     SocketProcedure socketProcedureScript;
     IPAddress serverip;
     IPAddress localip;
+    const string doneSymbol = "o";
+    const char splitSymbol = '/';
+    /////////////////////////////////////////////
+    //ソケットに関する変数宣言終了
+    /////////////////////////////////////////////
+
+    /////////////////////////////////////////////
+    //ゲームに関する変数宣言開始
+    /////////////////////////////////////////////
     [SerializeField]
     GameMaster gameMasterScript;
     [SerializeField]
@@ -44,9 +59,10 @@ public class SocketStatus : MonoBehaviour
     GameUIManager uiManaerScript;
     [SerializeField]
     string sendData;
-    [SerializeField]
-    bool isSocket = true;
     int playerNumber;
+    /////////////////////////////////////////////
+    //ゲームに関する変数宣言終了
+    /////////////////////////////////////////////
 
     void Start()
     {
@@ -59,6 +75,9 @@ public class SocketStatus : MonoBehaviour
         MessageUpdate();
     }
 
+    /// <summary>
+    /// サーバーから受信したデータを処理する変数
+    /// </summary>
     void MessageUpdate()
     {
         if (isUpdate)
@@ -72,18 +91,12 @@ public class SocketStatus : MonoBehaviour
         }
     }
 
-    public void SetIsAction(bool set)
-    {
-        isAction = true;
-    }
-
     void Ini()
     {
         SocketIni();
         socketProcedureScript.Connect(ref sock, serverip, portnum, ref connectsock);
         gameMasterScript.SetIsIni(true);
         status = Status.Ini;
-        isAction = true;
         playerStatusScript.SetIsOnline(true);
         SocektUpdate();
     }
@@ -111,33 +124,33 @@ public class SocketStatus : MonoBehaviour
                 switch (status)
                 {
                     case Status.None:
-                        Debug.Log("なにもありません");
                         break;
+
                     case Status.Ini:
                         Debug.Log("初期化開始");
-                        Recv();
-                        Send();
-                        Recv();
+                        ServerFromDataRecv();
+                        DoneSend();
+                        ServerFromDataRecv();
                         Debug.Log("初期化終了");
                         status = Status.None;
                         break;
 
                     case Status.Send:
                         Debug.Log("送信処理を開始します");
-                        SendData();
+                        SendServerData();
                         Debug.Log("送信処理を開始します");
                         break;
 
                     case Status.Recv:
-                        Debug.Log("受信処理をしますhogehoge");
-                        Recv();
+                        Debug.Log("受信処理を開始します");
+                        ServerFromDataRecv();
                         status = Status.None;
+                        Debug.Log("受信処理を終了します");
                         break;
                 }
             }
             Debug.Log("ゲームがしゅうりょうしました。");
         }
-
         catch (Exception ex)
         {
             Debug.Log("エラーが検出されました");
@@ -147,16 +160,20 @@ public class SocketStatus : MonoBehaviour
         }
         socketProcedureScript.Close(ref connectsock);
         socketProcedureScript.Close(ref sock);
-        isSocket = false;
-
     }
 
-    void Send()
+    /// <summary>
+    /// 受信が完了をしたことをサーバーに知らせる処理
+    /// </summary>
+    void DoneSend()
     {
-        socketProcedureScript.Send(ref connectsock, "o");
+        socketProcedureScript.Send(ref connectsock, doneSymbol);
     }
 
-    void Recv()
+    /// <summary>
+    /// サーバーからデータを受け取る処理
+    /// </summary>
+    void ServerFromDataRecv()
     {
         Debug.Log("データを受け取ります");
         string message = socketProcedureScript.Receive(ref connectsock);
@@ -167,7 +184,7 @@ public class SocketStatus : MonoBehaviour
     void RecievConpornent(string data)
     {
         Debug.Log("データを受け取りました");
-        string[] splitdata = data.Split('/');
+        string[] splitdata = data.Split(splitSymbol);
         Debug.Log(splitdata[0]);
 
         switch (splitdata[0])
@@ -190,8 +207,7 @@ public class SocketStatus : MonoBehaviour
                 break;
             case "r"://ゲーム結果
                 Debug.Log("ゲーム結果です。");
-                sendData = "o";
-                Send();
+                DoneSend();
                 ResultData(splitdata);
                 status = Status.Close;
                 break;
@@ -205,17 +221,21 @@ public class SocketStatus : MonoBehaviour
     {
         int count = massActionScript.PlayerMassSumCount(playerNumber);
         Debug.Log("合計 =" + count.ToString());
-        sendData = count.ToString() + "/";
-        SendData();
+        sendData = count.ToString() + splitSymbol;
+        SendServerData();
         status = Status.Recv;
     }
 
+    /// <summary>
+    /// ゲームの勝敗に関する処理
+    /// </summary>
+    /// <param name="data"></param>
     void ResultData(string[] data)
     {
         int p1Count = int.Parse(data[1]);
         int p2Count = int.Parse(data[2]);
         uiManaerScript.ResultInformation(p1Count, p2Count);
-        Send();
+        DoneSend();
     }
 
     /// <summary>
@@ -225,7 +245,8 @@ public class SocketStatus : MonoBehaviour
     /// <param name="side"></param>
     void AttachMassSend(int length, int side)
     {
-        string data = length.ToString() + "/" + side.ToString();
+        Debug.Log("test");
+        string data = length.ToString() + splitSymbol + side.ToString();
         socketProcedureScript.Send(ref sock, data);
     }
 
@@ -234,7 +255,10 @@ public class SocketStatus : MonoBehaviour
         sendData = set;
     }
 
-    void SendData()
+    /// <summary>
+    /// サーバーにデータを送信する処理
+    /// </summary>
+    void SendServerData()
     {
         socketProcedureScript.Send(ref connectsock, sendData);
         sendData = "";
@@ -252,13 +276,14 @@ public class SocketStatus : MonoBehaviour
         playerStatusScript.SetPlayerNumber(number);
         if (number == 1)
         {
+            uiManaerScript.UpdateInfoTurn(InformationUI.Status.MyTurn);
             playerStatusScript.SetIsTurn(true);
         }
         else
         {
             playerStatusScript.SetIsTurn(false);
+            uiManaerScript.UpdateInfoTurn(InformationUI.Status.EnemyTurn);
             status = Status.Recv;
-            isAction = true;
         }
         uiManaerScript.SetPlayerUI(number);
         playerStatusScript.SetIsOnline(true);
@@ -282,7 +307,7 @@ public class SocketStatus : MonoBehaviour
     }
 
     /// <summary>
-    /// 相手がマスを塗ったっ時に通る処理
+    /// 相手がマスを塗った時に通る処理
     /// </summary>
     void MassUpdate(string[] splitdata)
     {
@@ -299,15 +324,28 @@ public class SocketStatus : MonoBehaviour
                 break;
         }
         massActionScript.MassRender(playernum, length, side);
-        int turn = playerStatusScript.GetTurn();
+        UpdateInfoMassCount();
+    }
 
+    /// <summary>
+    /// マスの情報を更新する処理
+    /// </summary>
+    void UpdateInfoMassCount()
+    {
+        int player1 = 0;
+        int player2 = 0;
+        massActionScript.PlayerMassCount(ref player1, ref player2, playerStatusScript.GetPlayerNumber());
+        uiManaerScript.UpdateMassCount(player1, player2);
+        int turn = playerStatusScript.GetTurn();
         if (playerStatusScript.GetPlayerNumber() == 1 && turn <= 0)
         {
-            Debug.Log("終了");
+            Debug.Log("ゲームが終わりました");
             status = Status.Recv;
             return;
         }
-            status = Status.None;
-            playerStatusScript.SetIsTurn(true);
+        status = Status.None;
+        playerStatusScript.SetIsTurn(true);
+        uiManaerScript.UpdateInfoTurn(InformationUI.Status.MyTurn);
     }
+
 }

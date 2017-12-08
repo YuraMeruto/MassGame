@@ -1,8 +1,14 @@
-﻿using System.Collections;
+﻿//////////////////////////////////////
+//製作者　名越大樹
+//クラス　マスのステータスに関するクラス
+//////////////////////////////////////
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MassStatus : MonoBehaviour {
+public class MassStatus : MonoBehaviour
+{
 
     [SerializeField]
     Renderer render;
@@ -32,7 +38,7 @@ public class MassStatus : MonoBehaviour {
         return playerNumber;
     }
 
-    public void SetMassNumber(int set,int length, int side)
+    public void SetMassNumber(int set, int length, int side)
     {
         massNumber = set;
         lengthNumber = length;

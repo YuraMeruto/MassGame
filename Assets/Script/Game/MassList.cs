@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/////////////////////////////////////
+//製作者　名越大樹
+//クラス　ボード上のマスを管理するクラス
+/////////////////////////////////////
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +16,7 @@ public class MassList : MonoBehaviour
     MassStatus[,] massStatusArray= new MassStatus[6, 6];
     [SerializeField]
     GameObject massObj;
+
     public void SetMassStatus(int length,int side,MassStatus set)
     {
         massStatusArray[length, side] = set;
@@ -33,5 +39,4 @@ public class MassList : MonoBehaviour
     {
         return massSideSize;
     }
-
 }

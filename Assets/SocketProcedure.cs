@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/////////////////////////////////////////////
+//製作者　名越大樹
+//クラス　ソケットの動作に関するクラス
+/////////////////////////////////////////////
+
+using System.Collections;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +13,17 @@ using System.Net.Sockets;
 using System;
 public class SocketProcedure : MonoBehaviour
 {
+    public enum LogStatus
+    {
+        Bind,
+        Accept,
+        Connect,
+        Send,
+        Recv
+    }
     string test;
     byte[] recievebyte = new byte[1000];
+
     public void Bind(ref Socket sock, IPEndPoint endpoint)
     {
         sock.Bind(endpoint);
@@ -22,6 +36,10 @@ public class SocketProcedure : MonoBehaviour
         Debug.Log("Listenしました");
     }
 
+    /// <summary>
+    /// ローカルアドレスを取得
+    /// </summary>
+    /// <returns></returns>
     public string GetHost()
     {
         IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
@@ -31,26 +49,22 @@ public class SocketProcedure : MonoBehaviour
 
     public void Connect(ref Socket sock, IPAddress ip, int port, ref Socket connectsock)
     {
-        Debug.Log("コネクト開始");
+        LogStart(ref sock, LogStatus.Connect);
         sock.Connect(ip, port);
         connectsock = sock;
         Debug.Log(sock.RemoteEndPoint);
-        Debug.Log("コネクトしました");
-        if(sock.Connected)
+        LogEnd(ref sock, LogStatus.Connect);
+        if (connectsock.Connected)
         {
-            test = "接続できました";
-        }
-
-        else
-        {
-            test = "接続できませんでした";
+            Debug.Log("接続成功");
         }
     }
 
     public Socket Accept(ref Socket sock)
     {
+        LogStart(ref sock, LogStatus.Accept);
         Socket result = sock.Accept();
-        Debug.Log("Acceptしました。");
+        LogEnd(ref sock, LogStatus.Accept);
         return result;
     }
 
@@ -58,11 +72,20 @@ public class SocketProcedure : MonoBehaviour
     {
         byte[] sendbyte = Encoding.UTF8.GetBytes(message);
         sock.SendTimeout = 1000;
-        int result = sock.Send(sendbyte, 0, sendbyte.Length, SocketFlags.None);
-        Debug.Log("現在のソケットの状況" + sock);
+        int result = 0;
+        LogStart(ref sock, LogStatus.Send);
+        try
+        {
+             result = sock.Send(sendbyte, 0, sendbyte.Length, SocketFlags.None);
+        }
+        catch(Exception ex)
+        {
+            ErrorLog(ex,LogStatus.Send);
+            sock.Close();
+        }
         Array.Clear(sendbyte, 0, sendbyte.Length);
         sock.SendBufferSize = 0;
-        Debug.Log("送信完了です.");
+        LogEnd(ref sock, LogStatus.Send);
         Debug.Log("送信の結果 = " + result);
         return true;
     }
@@ -70,22 +93,18 @@ public class SocketProcedure : MonoBehaviour
     public string Receive(ref Socket sock)
     {
         int result = -2;
-        Debug.Log("受信開始");
-        Debug.Log(sock.AddressFamily);
-        //        sock.Receive(recievebyte);
-        try {
+        LogStart(ref sock, LogStatus.Recv);
+        try
+        {
             result = sock.Receive(recievebyte, 0, recievebyte.Length, SocketFlags.None);
         }
         catch (Exception ex)
         {
-            Debug.Log("受信失敗");
-            Debug.Log(ex.Message);
+            ErrorLog(ex,LogStatus.Recv);
         }
-        Debug.Log(result);
-        Debug.Log("現在のソケットの状況 = " + sock);
+        LogEnd(ref sock, LogStatus.Recv);
         string message = Encoding.UTF8.GetString(recievebyte);
         Array.Clear(recievebyte, 0, recievebyte.Length);
-        Debug.Log("メッセージを受信しました。");
         Debug.Log("メッセージ内容 = " + message);
         return message;
     }
@@ -98,9 +117,62 @@ public class SocketProcedure : MonoBehaviour
         Debug.Log("ソケットを閉じました");
     }
 
-
     public string TestMessage()
     {
         return test;
+    }
+
+    void ErrorLog(Exception ex, LogStatus status)
+    {
+        Debug.Log(ex.Message);
+    }
+    void LogStart(ref Socket sock, LogStatus status)
+    {
+        Debug.Log("現在のソケットの状況" + sock);
+        switch (status)
+        {
+            case LogStatus.Send:
+                Debug.Log("送信開始です");
+                break;
+
+            case LogStatus.Recv:
+                Debug.Log("受信開始です");
+                break;
+
+            case LogStatus.Bind:
+                Debug.Log("バインド開始です");
+                break;
+
+            case LogStatus.Connect:
+                Debug.Log("コネクト開始です");
+                break;
+
+            case LogStatus.Accept:
+                Debug.Log("アクセプト開始です");
+                break;
+        }
+    }
+
+    void LogEnd(ref Socket sock, LogStatus status)
+    {
+        Debug.Log("現在のソケットの状況" + sock);
+        switch (status)
+        {
+            case LogStatus.Send:
+                Debug.Log("送信終了です");
+                break;
+            case LogStatus.Recv:
+                Debug.Log("受信終了です");
+                break;
+            case LogStatus.Bind:
+                Debug.Log("バインド終了です");
+                break;
+            case LogStatus.Connect:
+                Debug.Log("コネクト終了です");
+                break;
+            case LogStatus.Accept:
+                Debug.Log("アクセプト終了です");
+                break;
+        }
     }
 }
