@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿////////////////////////////////////
+//製作者　名越大樹
+//クラス　ほかのマネージャークラスと中継をするクラス
+////////////////////////////////////
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

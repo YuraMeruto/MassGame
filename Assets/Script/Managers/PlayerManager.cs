@@ -34,6 +34,7 @@ public class PlayerManager : MonoBehaviour
     {
         return playerStatusScript.GetTurn();
     }
+
     public void SetIsTurn(bool set)
     {
         playerStatusScript.SetIsTurn(set);

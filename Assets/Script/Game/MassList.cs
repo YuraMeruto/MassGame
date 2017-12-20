@@ -21,6 +21,7 @@ public class MassList : MonoBehaviour
     {
         massStatusArray[length, side] = set;
     }
+
     public MassStatus[,] GetMassStatusArray()
     {
         return massStatusArray;
@@ -30,6 +31,7 @@ public class MassList : MonoBehaviour
     {
         return massObj;
     }
+
     public int GetMassLengthSize()
     {
         return massLengthSize;

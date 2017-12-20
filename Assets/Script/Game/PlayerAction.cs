@@ -2,6 +2,7 @@
 //製作者　名越大樹
 //クラス　プレイヤーの操作に関する処理
 ///////////////////////////////////
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

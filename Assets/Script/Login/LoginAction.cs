@@ -4,8 +4,8 @@ using UnityEngine;
 using System.Threading;
 using System.Net.Sockets;
 using System.Net;
-public class LoginAction : MonoBehaviour {
-
+public class LoginAction : MonoBehaviour 
+{
     [SerializeField]
     SocketProcedure socketProcedureScript;
     Socket sock;
@@ -16,12 +16,11 @@ public class LoginAction : MonoBehaviour {
     string userkey;
     [SerializeField]
     string idkey;
-    // Update is called once per frame
+	
     void Update()
     {
         Key();
     }
-
 
     void Key()
     {
@@ -32,7 +31,6 @@ public class LoginAction : MonoBehaviour {
             UserData();
         }
     }
-
 
     void UserData()
     {

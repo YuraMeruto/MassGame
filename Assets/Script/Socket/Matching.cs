@@ -1,11 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+/////////////////////////////////////////
+//製作者　名越大樹
+//クラス　サーバーとの通信をするクラス
+/////////////////////////////////////////
+
 using UnityEngine;
 using UnityEngine.UI;
 using System.Threading;
 using System.Net;
 using System.Net.Sockets;
 using System.Diagnostics;
+
 public class Matching : MonoBehaviour
 {
     Socket sock;
@@ -38,6 +44,7 @@ public class Matching : MonoBehaviour
             testthread.Start();
         }
     }
+	
     void Ini()
     {
         serverip = IPAddress.Parse(serverIPName);
@@ -47,16 +54,5 @@ public class Matching : MonoBehaviour
         connectsock = null;
         socketProcedureScript.Connect(ref sock, serverip, portnum, ref connectsock);
         socketProcedureScript.Receive(ref connectsock);
-        //        socketProcedureScript.Receive(ref connectsock);
-        //        socketProcedureScript.Close(ref connectsock);
-        //socketProcedureScript.Close(ref sock);
-
-    }
-
-    void TestSend()
-    {
-        socketProcedureScript.Send(ref connectsock, "hogehoge");
-        socketProcedureScript.Close(ref connectsock);
-        socketProcedureScript.Close(ref sock);
     }
 }

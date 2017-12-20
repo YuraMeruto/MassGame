@@ -9,7 +9,6 @@ using UnityEngine;
 
 public class MassStatus : MonoBehaviour
 {
-
     [SerializeField]
     Renderer render;
     [SerializeField]
@@ -55,5 +54,4 @@ public class MassStatus : MonoBehaviour
         length = lengthNumber;
         side = sideNumber;
     }
-
 }

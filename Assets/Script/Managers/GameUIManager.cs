@@ -2,6 +2,7 @@
 //製作者　名越大樹
 //クラス　ゲーム上での情報を表示するクラス
 ///////////////////////////////////////
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

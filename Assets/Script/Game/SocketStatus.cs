@@ -22,6 +22,7 @@ public class SocketStatus : MonoBehaviour
         Recv,
         Close
     }
+	
     ////////////////////////////////////////////
     //ソケットに関する変宣言数開始
     ////////////////////////////////////////////////
@@ -101,6 +102,9 @@ public class SocketStatus : MonoBehaviour
         SocektUpdate();
     }
 
+    /// <summary>
+    /// ソケットの設定をする処理
+    /// </summary>
     void SocketIni()
     {
         serverip = IPAddress.Parse(serverIPName);
@@ -245,7 +249,6 @@ public class SocketStatus : MonoBehaviour
     /// <param name="side"></param>
     void AttachMassSend(int length, int side)
     {
-        Debug.Log("test");
         string data = length.ToString() + splitSymbol + side.ToString();
         socketProcedureScript.Send(ref sock, data);
     }
@@ -347,5 +350,4 @@ public class SocketStatus : MonoBehaviour
         playerStatusScript.SetIsTurn(true);
         uiManaerScript.UpdateInfoTurn(InformationUI.Status.MyTurn);
     }
-
 }

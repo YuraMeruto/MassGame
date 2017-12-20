@@ -1,7 +1,13 @@
-﻿using System.Collections;
+﻿////////////////////////////////////
+//製作者　名越大樹
+//クラス　ゲーム状態を表示するクラス
+////////////////////////////////////
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class InformationUI : MonoBehaviour
 {
     [SerializeField]
@@ -10,11 +16,13 @@ public class InformationUI : MonoBehaviour
     Text massInfoText;
     [SerializeField]
     GameUIManager uiManagerScript;
+
     public enum Status
     {
         MyTurn,
         EnemyTurn
     }
+
     /// <summary>
     /// ターンを表示させる処理
     /// </summary>
@@ -49,9 +57,8 @@ public class InformationUI : MonoBehaviour
     /// <param name="p2"></param>
     public void Result(int p1, int p2)
     {
-        string result = "";
-        string wintext = "<color=red>YourWin</color>";
-        string losetext = "<color=blue>YourLose</color>";
+        string wintext = "<color=yellow>YourWin</color>";
+        string losetext = "<color=black>YourLose</color>";
         if (uiManagerScript.GetPlayerNumber() == 1)
         {
             if (p1 <= p2)

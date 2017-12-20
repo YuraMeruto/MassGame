@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿////////////////////////////////
+//製作者　名越大樹
+//クラス　ゲーム全体を管理するクラス
+/////////////////////////////////
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +13,7 @@ public class GameMaster : MonoBehaviour
     [SerializeField]
     bool isGame;
     [SerializeField]
-    IniManager iniManaGerScript;
+    IniManager iniManagerScript;
 
     public void SetIsGame(bool set)
     {
@@ -25,7 +30,7 @@ public class GameMaster : MonoBehaviour
         if (isIni)
         {
             Debug.Log("生成開始");
-            iniManaGerScript.Ini();
+            iniManagerScript.Ini();
             isIni = false;
             isGame = true;
         }

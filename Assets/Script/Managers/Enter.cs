@@ -9,6 +9,7 @@ public class Enter : MonoBehaviour
     Text userNameText;
     [SerializeField]
     UIManager uiManagerScript;
+
     public void EnterButton()
     {
         if (userNameText.text == "")
@@ -21,7 +22,6 @@ public class Enter : MonoBehaviour
 
     void DataSet()
     {
-        Debug.Log("ルーキー");
         Dictionary<string, string> data = new Dictionary<string, string>();
         data.Add("name",userNameText.text);
         data.Add("status",1.ToString());
@@ -32,7 +32,6 @@ public class Enter : MonoBehaviour
 
     void ThreadPostRequest()
     {
-
         while(uiManagerScript.GetPostStatus() == Post.Status.None)
         {
             

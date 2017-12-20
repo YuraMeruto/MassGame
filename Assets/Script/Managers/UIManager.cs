@@ -7,9 +7,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class UIManager : MonoBehaviour
 {
-
     [SerializeField]
     GameObject UserNameEnter;
     [SerializeField]
@@ -31,6 +31,7 @@ public class UIManager : MonoBehaviour
     {
         postScript.PostRequest(data, requestTime, url);
     }
+
     public Post.Status GetPostStatus()
     {
         return postScript.GetStatus();

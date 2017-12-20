@@ -7,8 +7,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IniManager : MonoBehaviour {
-
+public class IniManager : MonoBehaviour
+{
     [SerializeField]
     MassManager massManagerScript;
 

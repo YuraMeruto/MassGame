@@ -1,9 +1,14 @@
-﻿using System.Collections;
+﻿//////////////////////////////////
+//製作者　名越大樹
+//クラス　サーバーにリクエストするクラス
+//////////////////////////////////
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Post : MonoBehaviour {
-
+public class Post : MonoBehaviour
+{
     public enum Status
     {
         None,
@@ -13,17 +18,17 @@ public class Post : MonoBehaviour {
     }
     [SerializeField]
     Status status = Status.None;
-
-    public Status GetStatus()
-    {
-        return status;
-    }
     string serverUrl;
     float timeOut;
     [SerializeField]
     string responseMeesage;
 
-    public void PostRequest(Dictionary<string,string> data,float time,string url)
+    public Status GetStatus()
+    {
+        return status;
+    }
+
+    public void PostRequest(Dictionary<string, string> data, float time, string url)
     {
         serverUrl = url;
         timeOut = time;

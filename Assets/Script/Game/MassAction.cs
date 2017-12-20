@@ -1,25 +1,32 @@
-﻿using System.Collections;
+﻿////////////////////////////////////
+//製作者　名越大樹
+//クラス　ゲーム上のマス全体を処理するクラス
+////////////////////////////////////
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MassAction : MonoBehaviour {
+public class MassAction : MonoBehaviour
+{
     [SerializeField]
     MassList massListScript;
     [SerializeField]
     GameObject instacePos;
+
     public void Ini()
     {
         Vector3 pos = instacePos.transform.position;
         int number = 0;
-        for (int length = 0; length < massListScript.GetMassLengthSize();length++)
+        for (int length = 0; length < massListScript.GetMassLengthSize(); length++)
         {
-            for(int side = 0;side < massListScript.GetMassSideSize(); side++)
+            for (int side = 0; side < massListScript.GetMassSideSize(); side++)
             {
                 GameObject obj = massListScript.GetMassObj();
-                GameObject instanceobj = Instantiate(obj,pos,Quaternion.identity);
+                GameObject instanceobj = Instantiate(obj, pos, Quaternion.identity);
                 MassStatus status = instanceobj.GetComponent<MassStatus>();
-                status.SetMassNumber(number,length,side);
-                massListScript.SetMassStatus(length,side,status);
+                status.SetMassNumber(number, length, side);
+                massListScript.SetMassStatus(length, side, status);
                 pos.x += 2;
                 number++;
             }
@@ -28,6 +35,13 @@ public class MassAction : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// ゲーム上のマスの色を変える処理
+    /// </summary>
+    /// <param name="playernumnber"></param>
+    /// <param name="targetlength"></param>
+    /// <param name="targetside"></param>
+    /// <returns></returns>
     public bool MassRender(int playernumnber, int targetlength, int targetside)
     {
         MassStatus[,] massarry = massListScript.GetMassStatusArray();
@@ -60,14 +74,19 @@ public class MassAction : MonoBehaviour {
     }
 
 
-    public void MassRender(int playernum,int massnum)
+    /// <summary>
+    /// サーバーから送られた最初にマスを塗る処理
+    /// </summary>
+    /// <param name="playernum"></param>
+    /// <param name="massnum"></param>
+    public void MassRender(int playernum, int massnum)
     {
         MassStatus[,] massarry = massListScript.GetMassStatusArray();
         for (int length = 0; length < massListScript.GetMassLengthSize(); length++)
         {
             for (int side = 0; side < massListScript.GetMassSideSize(); side++)
             {
-                if (massnum == massarry[length,side].GetMassNumber())
+                if (massnum == massarry[length, side].GetMassNumber())
                 {
                     massarry[length, side].SetPlayerNumber(playernum);
                 }
@@ -103,7 +122,7 @@ public class MassAction : MonoBehaviour {
     /// <param name="p1"></param>
     /// <param name="p2"></param>
     /// <param name="playernum"></param>
-    public void PlayerMassCount(ref int p1,ref int p2,int playernum)
+    public void PlayerMassCount(ref int p1, ref int p2, int playernum)
     {
         MassStatus[,] massarray = massListScript.GetMassStatusArray();
         for (int length = 0; length < massListScript.GetMassLengthSize(); length++)
@@ -114,7 +133,7 @@ public class MassAction : MonoBehaviour {
                 {
                     p1++;
                 }
-                else if(massarray[length,side].GetPlayerNumber() == 2)
+                else if (massarray[length, side].GetPlayerNumber() == 2)
                 {
                     p2++;
                 }
